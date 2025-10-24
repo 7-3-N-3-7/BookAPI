@@ -14,5 +14,6 @@ public class Routes {
                 path("/hotels", hotelRoute.getRoutes());
                 path("/books", bookRoute.getRoutes());
         };
+
     }
 }
