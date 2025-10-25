@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import dat.entities.User;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -51,6 +51,8 @@ public class Book {
         this.author = bookDTO.getAuthor();
         this.user = bookDTO.getUser();
     }
+
+
 
     @Override
     public boolean equals(Object o) {

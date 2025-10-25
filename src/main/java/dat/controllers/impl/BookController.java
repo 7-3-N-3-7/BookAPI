@@ -3,10 +3,10 @@ package dat.controllers.impl;
 import dat.config.HibernateConfig;
 import dat.controllers.IController;
 import dat.daos.impl.BookDAO;
-import dat.dtos.HotelDTO;
 import dat.dtos.BookDTO;
 import dat.exceptions.Message;
 import dat.entities.Book;
+import dk.bugelhartmann.UserDTO;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
 

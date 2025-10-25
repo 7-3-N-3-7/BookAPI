@@ -1,8 +1,10 @@
-package dat.security.entities;
+package dat.entities;
 
 import dat.entities.Book;
+import dat.security.entities.ISecurityUser;
 import jakarta.persistence.*;
 import lombok.*;
+import org.jetbrains.annotations.NotNull;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.Serial;
@@ -35,27 +37,22 @@ public class User implements Serializable, ISecurityUser {
     @Column(name = "password")
     private String password;
 
-    private static Set<Book> books = new HashSet<>();
 
     @JoinTable(name = "user_roles", joinColumns = {@JoinColumn(name = "user_name", referencedColumnName = "username")}, inverseJoinColumns = {@JoinColumn(name = "role_name", referencedColumnName = "name")})
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private Set<Role> roles = new HashSet<>();
+    private Set<Book> books = new HashSet<>();
 
-    public Set<String> getRolesAsStrings() {
-        if (roles.isEmpty()) {
+    public Set<String> getBookTitles() {
+        if (books.isEmpty()) {
             return null;
         }
-        Set<String> rolesAsStrings = new HashSet<>();
-        roles.forEach((role) -> {
-            rolesAsStrings.add(role.getRoleName());
+        Set<String> bookTitles = new HashSet<>();
+        books.forEach((book) -> {
+            bookTitles.add(book.getTitle());
         });
-        return rolesAsStrings;
+        return bookTitles;
     }
 
-    public static void addBook(Book book)
-    {
-        books.add(book);
-    }
 
     public boolean verifyPassword(String pw) {
         return BCrypt.checkpw(pw, this.password);
@@ -66,26 +63,22 @@ public class User implements Serializable, ISecurityUser {
         this.password = BCrypt.hashpw(userPass, BCrypt.gensalt());
     }
 
-    public User(String userName, Set<Role> roleEntityList) {
+    public User(String userName, Set<Book> books) {
         this.username = userName;
-        this.roles = roleEntityList;
+        this.books = books;
     }
 
-    public void addRole(Role role) {
-        if (role == null) {
-            return;
-        }
-        roles.add(role);
-        role.getUsers().add(this);
+    public void addBook(@NotNull Book book) {
+        books.add(book);
+        book.setUser(this);
     }
 
-    public void removeRole(String userRole) {
-        roles.stream()
-                .filter(role -> role.getRoleName().equals(userRole))
+    public void removeBook(Book book) {
+        books.stream()
+                .filter(books -> book.getTitle().equals(book.getTitle()))
                 .findFirst()
                 .ifPresent(role -> {
-                    roles.remove(role);
-                    role.getUsers().remove(this);
+                    books.remove(role);
                 });
     }
 }

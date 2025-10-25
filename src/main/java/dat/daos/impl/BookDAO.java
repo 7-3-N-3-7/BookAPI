@@ -2,15 +2,14 @@ package dat.daos.impl;
 
 
 import dat.daos.IDAO;
-import dat.dtos.HotelDTO;
 import dat.dtos.BookDTO;
-import dat.entities.Hotel;
 import dat.entities.Book;
+import dk.bugelhartmann.UserDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 import lombok.NoArgsConstructor;
-
+import dat.entities.User;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.function.Function;
@@ -34,7 +33,7 @@ public class BookDAO implements IDAO<BookDTO, Integer> {
             em.getTransaction().begin();
             Book book = new Book(bookDTO);
             User user = em.find(User.class, userId);
-            User.addBook(book);
+            user.addBook(book);
             em.persist(book);
             User mergedUser = em.merge(user);
             em.getTransaction().commit();
