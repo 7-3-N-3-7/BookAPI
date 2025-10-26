@@ -23,19 +23,19 @@ public class UserController implements IController<UserDTO, Integer> {
         // request
         int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
         // DTO
-        UserDTO hotelDTO = dao.read(id);
+        UserDTO dto = dao.read(id);
         // response
         ctx.res().setStatus(200);
-        ctx.json(hotelDTO, UserDTO.class);
+        ctx.json(dto, UserDTO.class);
     }
 
     @Override
     public void readAll(Context ctx) {
-        // List of DTOS
-        java.util.Set<UserDTO> hotelDTOS = dao.readAll();
+        // Set of DTOS
+        java.util.Set<UserDTO> dtos = dao.readAll();
         // response
         ctx.res().setStatus(200);
-        ctx.json(hotelDTOS, UserDTO.class);
+        ctx.json(dtos, UserDTO.class);
     }
 
     @Override
@@ -43,10 +43,10 @@ public class UserController implements IController<UserDTO, Integer> {
         // request
         UserDTO jsonRequest = ctx.bodyAsClass(UserDTO.class);
         // DTO
-        UserDTO hotelDTO = dao.create(jsonRequest);
+        UserDTO dto = dao.create(jsonRequest);
         // response
         ctx.res().setStatus(201);
-        ctx.json(hotelDTO, UserDTO.class);
+        ctx.json(dto, UserDTO.class);
     }
 
     @Override
@@ -54,10 +54,10 @@ public class UserController implements IController<UserDTO, Integer> {
         // request
         int id = ctx.pathParamAsClass("id", Integer.class).check(this::validatePrimaryKey, "Not a valid id").get();
         // dto
-        UserDTO hotelDTO = dao.update(id, validateEntity(ctx));
+        UserDTO dto = dao.update(id, validateEntity(ctx));
         // response
         ctx.res().setStatus(200);
-        ctx.json(hotelDTO, User.class);
+        ctx.json(dto, UserDTO.class);
     }
 
     @Override
@@ -77,8 +77,8 @@ public class UserController implements IController<UserDTO, Integer> {
     @Override
     public UserDTO validateEntity(Context ctx) {
         return ctx.bodyValidator(UserDTO.class)
-                .check( user -> user.getHotelAddress() != null && !user.getHotelAddress().isEmpty(), "Hotel address must be set")
-                .check( user -> user.getHotelName() != null && !user.getHotelName().isEmpty(), "Hotel name must be set")
+                .check( user -> user.getId() != null, "user id MUST be set")
+                .check( user -> user.getUsername() != null && !user.getUsername().isEmpty(), "username MUST be set")
                 .check( user -> user.getUserRole() != null, "User role MUST be set")
                 .get();
     }
