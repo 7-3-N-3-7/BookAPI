@@ -38,7 +38,7 @@ public class BookController implements IController<BookDTO, Integer> {
     @Override
     public void readAll(Context ctx) {
         // entity
-        List<BookDTO> bookDTOS = dao.readAll();
+        java.util.Set<BookDTO> bookDTOS = dao.readAll();
         // response
         ctx.res().setStatus(200);
         ctx.json(bookDTOS, BookDTO.class);
