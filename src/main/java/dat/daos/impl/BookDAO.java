@@ -50,10 +50,10 @@ public class BookDAO implements IDAO<BookDTO, Integer> {
     }
 
     @Override
-    public List<BookDTO> readAll() {
+    public java.util.Set<BookDTO> readAll() {
         try (EntityManager em = emf.createEntityManager()) {
             TypedQuery<BookDTO> query = em.createQuery("SELECT new dat.dtos.BookDTO(b) FROM Book b", BookDTO.class);
-            return query.getResultList();
+            return new java.util.HashSet<>(query.getResultList());
         }
     }
 
