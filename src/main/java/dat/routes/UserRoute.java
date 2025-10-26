@@ -1,9 +1,8 @@
 package dat.routes;
 
+import static io.javalin.apibuilder.ApiBuilder.*;
 import dat.security.enums.Role;
 import io.javalin.apibuilder.EndpointGroup;
-
-import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class UserRoute {
 
