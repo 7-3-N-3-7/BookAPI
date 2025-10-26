@@ -4,7 +4,7 @@ package dat.daos.impl;
 import dat.daos.IDAO;
 import dat.dtos.BookDTO;
 import dat.entities.Book;
-import dk.bugelhartmann.UserDTO;
+import dat.dtos.UserDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
@@ -37,7 +37,7 @@ public class BookDAO implements IDAO<BookDTO, Integer> {
             em.persist(book);
             User mergedUser = em.merge(user);
             em.getTransaction().commit();
-            return new UserDTO(mergedUser);
+            return new UserDTO(mergedUser, user.getBooks());
         }
     }
 

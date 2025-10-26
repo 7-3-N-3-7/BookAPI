@@ -6,7 +6,7 @@ import dat.daos.impl.BookDAO;
 import dat.dtos.BookDTO;
 import dat.exceptions.Message;
 import dat.entities.Book;
-import dk.bugelhartmann.UserDTO;
+import dat.dtos.UserDTO;
 import io.javalin.http.Context;
 import jakarta.persistence.EntityManagerFactory;
 
