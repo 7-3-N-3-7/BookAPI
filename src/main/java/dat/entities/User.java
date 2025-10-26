@@ -28,17 +28,35 @@ public class User implements Serializable, ISecurityUser {
 
     @Serial
     private static final long serialVersionUID = 1L;
+    private java.lang.String username;
+
+    private dat.security.enums.Role userRole = dat.security.enums.Role.ANYONE;
+
+    public User(dat.dtos.UserDTO dto)
+    {
+        this.books = dto.getBooks();
+    }
+
+    public User (java.lang.String username,
+                 Set<Book> books,
+                 dat.security.enums.Role userRole)
+    {
+        this.username   =   username;
+        this.books      =   books;
+        this.userRole   =   userRole;
+    }
 
     @Id
     @Basic(optional = false)
     @Column(name = "username", length = 25)
     private String username;
+
     @Basic(optional = false)
     @Column(name = "password")
     private String password;
 
 
-    @JoinTable(name = "user_roles", joinColumns = {@JoinColumn(name = "user_name", referencedColumnName = "username")}, inverseJoinColumns = {@JoinColumn(name = "role_name", referencedColumnName = "name")})
+    @JoinTable(name = "user_books", joinColumns = {@JoinColumn(name = "user_name", referencedColumnName = "username")}, inverseJoinColumns = {@JoinColumn(name = "book_id", referencedColumnName = "id")})
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Set<Book> books = new HashSet<>();
 
@@ -80,6 +98,21 @@ public class User implements Serializable, ISecurityUser {
                 .ifPresent(role -> {
                     books.remove(role);
                 });
+    }
+
+    public void setUsername(java.lang.String username)
+    {
+        this.username = username;
+    }
+
+    public dat.security.enums.Role getUserRole()
+    {
+        return this.userRole;
+    }
+
+    public void setUserRole(dat.security.enums.Role role)
+    {
+        this.userRole = role;
     }
 }
 
