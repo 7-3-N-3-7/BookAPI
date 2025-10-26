@@ -32,6 +32,11 @@ public class UserDTO {
         this.username = username;
     }
 
+    public UserDTO(@org.jetbrains.annotations.NotNull java.lang.String     username)
+    {
+        this.username = username;
+    }
+
     public UserDTO(@org.jetbrains.annotations.NotNull User      user)
     {
         this.user = user;

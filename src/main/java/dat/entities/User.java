@@ -44,7 +44,7 @@ public class User implements Serializable, ISecurityUser {
     private Set<Book> books = new HashSet<>();
 
     @Column(name = "user_role")
-    private dat.security.enums.Role userRole = dat.security.enums.Role.ANYONE;
+    private dat.security.enums.Role userRole = dat.security.enums.Role.USER;
 
     public User(dat.dtos.UserDTO dto)
     {

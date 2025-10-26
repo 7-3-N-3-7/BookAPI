@@ -133,6 +133,17 @@ public class SecurityController implements ISecurityController {
         return roleNames.contains(user.getRole().toString().toUpperCase());
         }
 
+    private dk.bugelhartmann.UserDTO convertToTokenDTO(dat.dtos.UserDTO dto)
+    {
+        java.util.Set<String> role = Set.of(dto.getRole().toString());
+        return new dk.bugelhartmann.UserDTO(dto.getUsername(), role);
+    }
+
+    private dat.dtos.UserDTO convertFromTokenDTO(dk.bugelhartmann.UserDTO dto)
+    {
+        return new dat.dtos.UserDTO(dto.getUsername());
+    }
+
     @Override
     public String createToken(UserDTO user) {
         try {
@@ -149,7 +160,7 @@ public class SecurityController implements ISecurityController {
                 TOKEN_EXPIRE_TIME = Utils.getPropertyValue("TOKEN_EXPIRE_TIME", "config.properties");
                 SECRET_KEY = Utils.getPropertyValue("SECRET_KEY", "config.properties");
             }
-            return tokenSecurity.createToken(user, ISSUER, TOKEN_EXPIRE_TIME, SECRET_KEY);
+            return tokenSecurity.createToken(convertToTokenDTO(user), ISSUER, TOKEN_EXPIRE_TIME, SECRET_KEY);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ApiException(500, "Could not create token");
@@ -163,7 +174,8 @@ public class SecurityController implements ISecurityController {
 
         try {
             if (tokenSecurity.tokenIsValid(token, SECRET) && tokenSecurity.tokenNotExpired(token)) {
-                return tokenSecurity.getUserWithRolesFromToken(token);
+                dk.bugelhartmann.UserDTO tokenDto = tokenSecurity.getUserWithRolesFromToken(token);
+                return  convertFromTokenDTO(tokenDto);
             } else {
                 throw new NotAuthorizedException(403, "Token is not valid");
             }

@@ -25,9 +25,9 @@ public class Role implements Serializable {
     @Column(name = "name", length = 20)
     private String name;
 
-    @ToString.Exclude
-    @ManyToMany(mappedBy = "roles")
-    private Set<dat.entities.User> users = new HashSet<>();
+//    @ToString.Exclude
+//    @ManyToMany(mappedBy = "roles")
+//    private Set<dat.entities.User> users = new HashSet<>();
 
     public Role() {}
 
@@ -35,13 +35,13 @@ public class Role implements Serializable {
         this.name = roleName;
     }
 
-    public String getRoleName() {
-        return name;
-    }
+//    public String getRoleName() {
+//        return name;
+//    }
 
-    public Set<dat.entities.User> getUsers() {
-        return users;
-    }
+//    public Set<dat.entities.User> getUsers() {
+//        return users;
+//    }
 
     @Override
     public String toString() {
