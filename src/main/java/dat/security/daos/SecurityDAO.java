@@ -5,7 +5,7 @@ import dat.security.entities.Role;
 import dat.entities.User;
 import dat.security.exceptions.ApiException;
 import dat.security.exceptions.ValidationException;
-import dk.bugelhartmann.UserDTO;
+import dat.dtos.UserDTO;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -38,10 +38,10 @@ public class SecurityDAO implements ISecurityDAO {
             dat.entities.User user = em.find(dat.entities.User.class, username);
             if (user == null)
                 throw new EntityNotFoundException("No user found with username: " + username); //RuntimeException
-            user.getRoles().size(); // force roles to be fetched from db
+            //user.getRoles().size(); // force roles to be fetched from db
             if (!user.verifyPassword(password))
                 throw new ValidationException("Wrong password");
-            return new UserDTO(user.getUsername(), user.getRoles().stream().map(r -> r.getRoleName()).collect(Collectors.toSet()));
+            return new UserDTO(user);
         }
     }
 
@@ -57,7 +57,7 @@ public class SecurityDAO implements ISecurityDAO {
             if (userRole == null)
                 userRole = new Role("user");
             em.persist(userRole);
-            userEntity.addRole(userRole);
+            //userEntity.setRole(userRole);
             em.persist(userEntity);
             em.getTransaction().commit();
             return userEntity;
@@ -67,7 +67,7 @@ public class SecurityDAO implements ISecurityDAO {
         }
     }
 
-    @Override
+    //@Override
     public User addRole(UserDTO userDTO, String newRole) {
         try (EntityManager em = getEntityManager()) {
             User user = em.find(User.class, userDTO.getUsername());
@@ -79,7 +79,7 @@ public class SecurityDAO implements ISecurityDAO {
                     role = new Role(newRole);
                     em.persist(role);
                 }
-                user.addRole(role);
+                //user.addRole(role);
                 //em.merge(user);
             em.getTransaction().commit();
             return user;

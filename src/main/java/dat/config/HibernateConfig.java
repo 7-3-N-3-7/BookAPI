@@ -2,7 +2,7 @@ package dat.config;
 
 import dat.entities.Book;
 import dat.security.entities.Role;
-import dat.security.entities.User;
+import dat.entities.User;
 import dat.utils.Utils;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.SessionFactory;

@@ -7,13 +7,13 @@ import dat.utils.Utils;
 import dat.config.HibernateConfig;
 import dat.security.daos.ISecurityDAO;
 import dat.security.daos.SecurityDAO;
-import dat.security.entities.User;
+import dat.entities.User;
 import dat.security.exceptions.ApiException;
 import dat.security.exceptions.NotAuthorizedException;
 import dat.security.exceptions.ValidationException;
 import dk.bugelhartmann.ITokenSecurity;
 import dk.bugelhartmann.TokenSecurity;
-import dk.bugelhartmann.UserDTO;
+import dat.dtos.UserDTO;
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
 import io.javalin.http.HttpStatus;
@@ -77,9 +77,9 @@ public class SecurityController implements ISecurityController {
             ObjectNode returnObject = objectMapper.createObjectNode();
             try {
                 UserDTO userInput = ctx.bodyAsClass(UserDTO.class);
-                User created = securityDAO.createUser(userInput.getUsername(), userInput.getPassword());
+                dat.entities.User created = securityDAO.createUser(userInput.getUsername(), userInput.getPassword());
 
-                String token = createToken(new UserDTO(created.getUsername(), Set.of("USER")));
+                String token = createToken(new UserDTO(created));
                 ctx.status(HttpStatus.CREATED).json(returnObject
                         .put("token", token)
                         .put("username", created.getUsername()));
@@ -130,9 +130,7 @@ public class SecurityController implements ISecurityController {
         Set<String> roleNames = allowedRoles.stream()
                    .map(RouteRole::toString)  // Convert RouteRoles to  Set of Strings
                    .collect(Collectors.toSet());
-        return user.getRoles().stream()
-                   .map(String::toUpperCase)
-                   .anyMatch(roleNames::contains);
+        return roleNames.contains(user.getRole().toString().toUpperCase());
         }
 
     @Override
@@ -183,7 +181,7 @@ public class SecurityController implements ISecurityController {
                 // We need to get the role from the body and the username from the token
                 String newRole = ctx.bodyAsClass(ObjectNode.class).get("role").asText();
                 UserDTO user = ctx.attribute("user");
-                User updatedUser = securityDAO.addRole(user, newRole);
+                //User updatedUser = securityDAO.addRole(user, newRole);
                 ctx.status(200).json(returnObject.put("msg", "Role " + newRole + " added to user"));
             } catch (EntityNotFoundException e) {
                 ctx.status(404).json("{\"msg\": \"User not found\"}");

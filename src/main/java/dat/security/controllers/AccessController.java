@@ -1,7 +1,7 @@
 package dat.security.controllers;
 
 import dat.security.enums.Role;
-import dk.bugelhartmann.UserDTO;
+import dat.dtos.UserDTO;
 import io.javalin.http.Context;
 import io.javalin.http.UnauthorizedResponse;
 import io.javalin.security.RouteRole;
@@ -41,7 +41,7 @@ public class AccessController implements IAccessController {
         UserDTO user = ctx.attribute("user");
         Set<RouteRole> allowedRoles = ctx.routeRoles(); // roles allowed for the current route
         if (!securityController.authorize(user, allowedRoles)) {
-            throw new UnauthorizedResponse("Unauthorized with roles: " + user.getRoles() + ". Needed roles are: " + allowedRoles);
+            throw new UnauthorizedResponse("Unauthorized with roles: " + user.getRole() + ". Needed roles are: " + allowedRoles);
         }
     }
 }

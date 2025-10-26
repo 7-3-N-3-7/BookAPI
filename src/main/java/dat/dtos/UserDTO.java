@@ -15,7 +15,7 @@ public class UserDTO {
     private Set<Book> books = new HashSet<>();
     private java.lang.String username;
     private java.lang.Integer id;
-    //private dat.security.enums.Role userRole = dat.security.enums.Role.ANYONE;
+    private dat.security.enums.Role userRole = dat.security.enums.Role.ANYONE;
 
 
     public UserDTO(@org.jetbrains.annotations.NotNull User      user,
@@ -35,6 +35,15 @@ public class UserDTO {
     public UserDTO(@org.jetbrains.annotations.NotNull User      user)
     {
         this.user = user;
+    }
+
+    public java.lang.String getPassword()
+    {
+        return user.getPassword();
+    }
+
+    public dat.security.enums.Role getRole(){
+        return userRole;
     }
 
     public int hashCode() {
