@@ -27,7 +27,7 @@ public class Role implements Serializable {
 
     @ToString.Exclude
     @ManyToMany(mappedBy = "roles")
-    private Set<User> users = new HashSet<>();
+    private Set<dat.entities.User> users = new HashSet<>();
 
     public Role() {}
 
@@ -39,7 +39,7 @@ public class Role implements Serializable {
         return name;
     }
 
-    public Set<User> getUsers() {
+    public Set<dat.entities.User> getUsers() {
         return users;
     }
 

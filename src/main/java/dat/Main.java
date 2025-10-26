@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 public class Main {
 
     public static void main(String[] args) {
-        ApplicationConfig.startServer(7070);
+        dat.config.HibernateConfig.setTest(false);
+        dat.config.ApplicationConfig.startServer(7070);
     }
 }

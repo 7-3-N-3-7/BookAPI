@@ -39,7 +39,7 @@ public class User implements Serializable, ISecurityUser {
     private String password;
 
 
-    @JoinTable(name = "user_books", joinColumns = {@JoinColumn(name = "user_name", referencedColumnName = "username")}, inverseJoinColumns = {@JoinColumn(name = "book_id", referencedColumnName = "id")})
+    @JoinTable(name = "user_books", joinColumns = {@JoinColumn(name = "user_name", referencedColumnName = "username")}, inverseJoinColumns = {@JoinColumn(name = "book_id", referencedColumnName = "book_id")})
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Set<Book> books = new HashSet<>();
 

@@ -2,7 +2,7 @@ package dat.security.daos;
 
 
 import dat.security.entities.Role;
-import dat.security.entities.User;
+import dat.entities.User;
 import dat.security.exceptions.ApiException;
 import dat.security.exceptions.ValidationException;
 import dk.bugelhartmann.UserDTO;
@@ -35,7 +35,7 @@ public class SecurityDAO implements ISecurityDAO {
     @Override
     public UserDTO getVerifiedUser(String username, String password) throws ValidationException {
         try (EntityManager em = getEntityManager()) {
-            User user = em.find(User.class, username);
+            dat.entities.User user = em.find(dat.entities.User.class, username);
             if (user == null)
                 throw new EntityNotFoundException("No user found with username: " + username); //RuntimeException
             user.getRoles().size(); // force roles to be fetched from db
@@ -48,10 +48,10 @@ public class SecurityDAO implements ISecurityDAO {
     @Override
     public User createUser(String username, String password) {
         try (EntityManager em = getEntityManager()) {
-            User userEntity = em.find(User.class, username);
+            dat.entities.User userEntity = em.find(dat.entities.User.class, username);
             if (userEntity != null)
                 throw new EntityExistsException("User with username: " + username + " already exists");
-            userEntity = new User(username, password);
+            userEntity = new dat.entities.User(username, password);
             em.getTransaction().begin();
             Role userRole = em.find(Role.class, "user");
             if (userRole == null)
