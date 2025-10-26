@@ -28,8 +28,22 @@ public class User implements Serializable, ISecurityUser {
 
     @Serial
     private static final long serialVersionUID = 1L;
-    private java.lang.String username;
 
+    @Id
+    @Basic(optional = false)
+    @Column(name = "username", length = 25)
+    private String username;
+
+    @Basic(optional = false)
+    @Column(name = "password")
+    private String password;
+
+
+    @JoinTable(name = "user_books", joinColumns = {@JoinColumn(name = "user_name", referencedColumnName = "username")}, inverseJoinColumns = {@JoinColumn(name = "book_id", referencedColumnName = "id")})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private Set<Book> books = new HashSet<>();
+
+    @Column(name = "user_role")
     private dat.security.enums.Role userRole = dat.security.enums.Role.ANYONE;
 
     public User(dat.dtos.UserDTO dto)
@@ -45,20 +59,6 @@ public class User implements Serializable, ISecurityUser {
         this.books      =   books;
         this.userRole   =   userRole;
     }
-
-    @Id
-    @Basic(optional = false)
-    @Column(name = "username", length = 25)
-    private String username;
-
-    @Basic(optional = false)
-    @Column(name = "password")
-    private String password;
-
-
-    @JoinTable(name = "user_books", joinColumns = {@JoinColumn(name = "user_name", referencedColumnName = "username")}, inverseJoinColumns = {@JoinColumn(name = "book_id", referencedColumnName = "id")})
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private Set<Book> books = new HashSet<>();
 
     public Set<String> getBookTitles() {
         if (books.isEmpty()) {
